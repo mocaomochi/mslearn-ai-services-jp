@@ -31,7 +31,8 @@ Azure AI Service は、アプリケーションに組み込むことができる
 
 1. `https://portal.azure.com` で Azure ポータルを開き、Azure サブスクリプションに関連付けられた Microsoft アカウントでサインインします。
 2. 上部の検索バーで *Azure AI services* と入力して検索し、**Azure AI Services** を選択して、以下の設定で Azure AI Service マルチサービスアカウントリソースを作成します。
-    > 注意: Azure には、Azure AI Serives という名前のリソースが複数種類あります。 Azure AI Services Multi Service Account は以下のスクリーンショットのアイコンのAzure AI Servicesを選択してください。![Azure AI Services](./img/azure-ai-services-multi-account-resource.png)
+    > 注意: Azure には、Azure AI Serives という名前のリソースが複数種類あります。 Azure AI Services Multi Service Account は以下のスクリーンショットのアイコンのAzure AI Servicesを選択してください。
+    ![Azure AI Services](./img/azure-ai-services-multi-account-resource.png)
 
     - **サブスクリプション**: *自分の Azure サブスクリプション*
     - **リソースグループ**: *既存のリソースグループを選択するか新しいものを作成（制限付きのサブスクリプションを使用している場合、新しいリソースグループを作成する権限がない場合があります。その場合は提供されたものを使用してください）*
@@ -103,12 +104,10 @@ Azure AI Services の API は REST という仕組みを使っていて、HTTP �
 5. プログラムに入力を求められたら、いくつかのテキストを入力し、サービスによって検出された言語を確認してください。この結果は JSON レスポンスとして返されます。例えば、「Hello」、「Bonjour」、「こんにちは」などを入力して試してみてください。
 6. アプリケーションのテストが終わったら、「quit」と入力してプログラムを終了してください。
    
-    **C#**
-    > 実行結果
+    **C#**:実行結果
     ![dotnet run 実行結果](./img/dotnet-run.png)
 
-    **Python**
-    > 実行結果
+    **Python**:実行結果
     ![pip と rest-client.py の実行結果](./img/python-rest-client.png)
 
 ## SDKの利用方法
@@ -117,10 +116,10 @@ Azure AI Services の REST API を直接利用するコードを書くことも�
 
 1. Visual Studio Code で、自分の言語の好みに応じて **C-Sharp** または **Python** フォルダーの下にある **sdk-client** フォルダーを展開します。その後、ターミナルで `cd ../sdk-client` を実行して、該当する **sdk-client** フォルダーに移動します。
    
-    > C# または Python フォルダの中の **sdk-client** フォルダーを見つけます。
+    C# または Python フォルダの中の **sdk-client** フォルダーを見つけます。
     ![sdk-clientフォルダー](./img/sdk-client-folders.png)
 
-    > ターミナルで`cd`コマンドを使って、**sdk-client** フォルダーに移動します。
+    ターミナルで`cd`コマンドを使って、**sdk-client** フォルダーに移動します。
     ![cd sdk-client](./img/cd-sdk-client.png)
 
 2. 自分の言語に応じた以下のコマンドを実行して、Text Analytics SDK パッケージをインストールします。
@@ -131,7 +130,7 @@ Azure AI Services の REST API を直接利用するコードを書くことも�
     dotnet add package Azure.AI.TextAnalytics --version 5.3.0
     ```
 
-    > 実行結果:
+    実行結果:
     ![dotnet add package Azure.AI.TextAnalytics](./img/dotnet-add-package.png)
 
     **Python**
@@ -139,7 +138,7 @@ Azure AI Services の REST API を直接利用するコードを書くことも�
     ```
     pip install azure-ai-textanalytics==5.3.0
     ```
-    > 実行結果:
+    実行結果:
     ![pip install azure-ai-textanalytics](./img/pip-install-azure-ai-textanalytics.png)
 
 3. **sdk-client** フォルダーの中に設定用のファイルがあることを確認します。
@@ -173,12 +172,10 @@ Azure AI Services の REST API を直接利用するコードを書くことも�
 6. プログラムに入力を求められたら、いくつかのテキストを入力し、サービスが検出した言語を確認してください。例えば、「こんにちは」、「Hello」、「你好」などを試してみてください。
 7. アプリケーションのテストが終わったら、「quit」と入力してプログラムを終了してください。
    
-    **C#**
-    > 実行結果
+    **C#**:実行結果
     ![dotnet run](./img/cs-sdk-client.png)
 
-    **Python**
-    > 実行結果
+    **Python**:実行結果
     ![python sdk-client.py](./img/python-sdk-client.png)
 
 > **注意**: Unicode 文字セットが必要な一部の言語は、このシンプルなコンソールアプリケーションでは認識されない場合があります。
