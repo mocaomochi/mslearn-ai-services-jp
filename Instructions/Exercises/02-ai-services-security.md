@@ -1,125 +1,120 @@
 ---
 lab:
-    title: 'Manage Azure AI Services Security'
+    title: 'Azure AI Service のセキュリティを管理する'
     module: 'Module 2 - Developing AI Apps with Azure AI Services'
 ---
 
-# Manage Azure AI Services Security
+# Azure AI サービスのセキュリティを管理する
 
-Security is a critical consideration for any application, and as a developer you should ensure that access to resources such as Azure AI services is restricted to only those who require it.
+セキュリティはどんなアプリケーションでも重要なポイントです。開発者として、Azure AI Service のようなリソースへのアクセスは必要な人だけに制限するようにしましょう。
 
-Access to Azure AI services is typically controlled through authentication keys, which are generated when you initially create an Azure AI services resource.
+Azure AI サービスへのアクセスは、通常、Azure AI Service のリソースを作成したときに生成される認証キーを使って制御されます。
 
-## Clone the repository in Visual Studio Code
+## Visual Studio Code にリポジトリをクローンする
 
-You'll develop your code using Visual Studio Code. The code files for your app have been provided in a GitHub repo.
+コードを開発するには、Visual Studio Code を使います。アプリのコードファイルは GitHub リポジトリに用意されています。
 
-> **Tip**: If you have already cloned the **mslearn-ai-services** repo recently, open it in Visual Studio code. Otherwise, follow these steps to clone it to your development environment.
+> **ヒント**: 既に **mslearn-ai-services** リポジトリをクローンしている場合は、それを Visual Studio Code で開いてください。そうでない場合は、以下の手順に従って開発環境にクローンしてください。
 
-1. Start Visual Studio Code.
-2. Open the palette (SHIFT+CTRL+P) and run a **Git: Clone** command to clone the `https://github.com/MicrosoftLearning/mslearn-ai-services` repository to a local folder (it doesn't matter which folder).
-3. When the repository has been cloned, open the folder in Visual Studio Code.
-4. Wait while additional files are installed to support the C# code projects in the repo, if necessary
+1. Visual Studio Code を起動します。
+2. コマンドパレットを開きます（SHIFT+CTRL+P）し、**Git: Clone** コマンドを実行して `https://github.com/MicrosoftLearning/mslearn-ai-services` リポジトリをローカルフォルダにクローンします（フォルダはどこでも構いません）。
+3. リポジトリがクローンされたら、そのフォルダを Visual Studio Code で開きます。
+4. 必要に応じて、リポジトリ内の C# コードプロジェクトをサポートするための追加ファイルがインストールされるのを待ちます。
+    > **注意**: ビルドとデバッグに必要なアセットを追加するように求められた場合は、**今は追加しない** を選択してください。
 
-    > **Note**: If you are prompted to add required assets to build and debug, select **Not Now**.
+5. `Labfiles/02-ai-services-security` フォルダを展開します。
 
-5. Expand the `Labfiles/02-ai-services-security` folder.
+使いたい言語のフォルダを展開してください。C# と Python のコードが提供されています。
 
-Code for both C# and Python has been provided. Expand the folder of your preferred language.
+## Azure AI Services リソースを作成する
 
-## Provision an Azure AI Services resource
+もしまだサブスクリプションに Azure AI Services のリソースが作られていない場合は、**Azure AI Services** リソースを新規で作成する必要があります。
 
-If you don't already have one in your subscription, you'll need to provision an **Azure AI Services** resource.
-
-1. Open the Azure portal at `https://portal.azure.com`, and sign in using the Microsoft account associated with your Azure subscription.
-2. In the top search bar, search for *Azure AI services*, select **Azure AI Services**, and create an Azure AI services multi-service account resource with the following settings:
-    - **Subscription**: *Your Azure subscription*
-    - **Resource group**: *Choose or create a resource group (if you are using a restricted subscription, you may not have permission to create a new resource group - use the one provided)*
-    - **Region**: *Choose any available region*
-    - **Name**: *Enter a unique name*
+1. `https://portal.azure.com` で Azure ポータルを開き、Azure サブスクリプションに関連付けられた Microsoft アカウントでサインインします。
+2. 上部の検索バーで *Azure AI services* と入力して検索し、**Azure AI Services** を選択して、以下の設定で Azure AI Service マルチサービスアカウントリソースを作成します。
+    - **サブスクリプション**: *自分の Azure サブスクリプション*
+    - **リソースグループ**: *既存のリソースグループを選択するか新しいものを作成（制限付きのサブスクリプションを使用している場合、新しいリソースグループを作成する権限がない場合があります。その場合は提供されたものを使用してください）*
+    - **Region**: *利用可能なリージョンを選択*
+    - **Name**: *一意の名前を入力*
     - **Pricing tier**: Standard S0
-3. Select the required checkboxes and create the resource.
-4. Wait for deployment to complete, and then view the deployment details.
+![Create Azure AI Services](./img/create-azure-ai-services.png)
+3. 必要なチェックボックスを選択してリソースを作成します。
+4. デプロイが完了するのを待ち、デプロイの詳細を確認します。
 
-## Manage authentication keys
+## 認証キーの管理
 
-When you created your Azure AI services resource, two authentication keys were generated. You can manage these in the Azure portal or by using the Azure command line interface (CLI). 
+Azure AI サービスのリソースを作成すると、2つの認証キーが生成されます。これらのキーは、Azure ポータルや Azure コマンドラインインターフェイス (CLI) を使って管理できます。
 
-1. Choose one method of obtaining your authentication keys and endpoint: 
+1. 認証キーとエンドポイントを取得する方法を1つ選びます:
 
-    **Using the Azure portal**: In the Azure portal, go to your Azure AI services resource and view its **Keys and Endpoint** page. This page contains the information that you will need to connect to your resource and use it from applications you develop. Specifically:
-    - An HTTP *endpoint* to which client applications can send requests.
-    - Two *keys* that can be used for authentication (client applications can use either of the keys. A common practice is to use one for development, and another for production. You can easily regenerate the development key after developers have finished their work to prevent continued access).
-    - The *location* where the resource is hosted. This is required for requests to some (but not all) APIs.
+    ### Azure ポータルを使用する
+    Azure ポータルで、Azure AI サービスのリソースに移動し、**キーとエンドポイント**ページを表示します。このページには、リソースに接続してアプリケーションから使用するために必要な以下の情報が含まれています。
+    - クライアントアプリケーションがリクエストを送信できる HTTP *エンドポイント*。
+    - 認証に使用できる2つの*キー*（クライアントアプリケーションはどちらのキーも使用できます。一般的な方法として、1つを開発用に、もう1つを本番用に使用します。開発者が作業を終えた後、開発用のキーを再生成してアクセスを防ぐことが簡単にできます）。
+    - リソースがホストされている*場所*。これは一部のAPIリクエストに必要です（すべてのAPIではありません）。
 
-    **Using the Command Line**: Alternatively you can use the following command to get the list of Azure AI services keys. In Visual Studio Code, open a new terminal. Then paste in the following command; replacing *&lt;resourceName&gt;* with the name of your Azure AI services resource, and *&lt;resourceGroup&gt;* with the name of the resource group in which you created it.
-
+    ### コマンドラインを使う
+    代わりに、以下のコマンドを使ってAzure AIサービスのキーのリストを取得することもできます。Visual Studio Codeで新しいターミナルを開きます。その後、以下のコマンドを貼り付けます。*&lt;resourceName&gt;* をAzure AIサービスリソースの名前に、*&lt;resourceGroup&gt;* をリソースグループの名前に置き換えてください。
     ```
     az cognitiveservices account keys list --name <resourceName> --resource-group <resourceGroup>
     ```
 
-    The command returns a list of the keys for your Azure AI services resource - there are two keys, named **key1** and **key2**.
+    コマンドを実行すると、Azure AI サービスリソースのキーのリストが表示されます。キーは **key1** と **key2** の2つがあります。
 
-    > **Tip**: If you haven't authenticated Azure CLI yet, first run `az login` and sign into your account.
+    > **ヒント**: まだ Azure CLI にサインインしていない場合は、最初に `az login` を実行してアカウントにサインインしてください。
 
-2. To test your Azure AI service, you can use **curl** - a command line tool for HTTP requests. In the **02-ai-services-security** folder, open **rest-test.cmd** and edit the **curl** command it contains (shown below), replacing *&lt;yourEndpoint&gt;* and *&lt;yourKey&gt;* with your endpoint URI and **Key1** key to use the Analyze Text API in your Azure AI services resource.
-
+2. Azure AI サービスをテストするには、HTTPリクエスト用のコマンドラインツールである **curl** を使うことができます。**02-ai-services-security** フォルダ内の **rest-test.cmd** を開き、以下の **curl** コマンドを編集して、*&lt;yourEndpoint&gt;* と *&lt;yourKey&gt;* をあなたのエンドポイントURIと **Key1** キーに置き換えて、Azure AI サービスリソースのテキスト解析APIを使用します。
     ```bash
     curl -X POST "<yourEndpoint>/language/:analyze-text?api-version=2023-04-01" -H "Content-Type: application/json" -H "Ocp-Apim-Subscription-Key: <your-key>" --data-ascii "{'analysisInput':{'documents':[{'id':1,'text':'hello'}]}, 'kind': 'LanguageDetection'}"
     ```
 
-3. Save your changes. In the terminal, navigate to the "02-ai-services-security" folder. (**Note**: you can do this by right clicking on the 02-ai-services-security" folder in your explorer, and selecting *Open in Integrated Terminal*). Then run the following command:
-
+3. 変更を保存します。ターミナルで "02-ai-services-security" フォルダに移動します。（**注意**: エクスプローラーで "02-ai-services-security" フォルダを右クリックし、*統合ターミナルで開く* を選択することでこれを行うことができます）。次に、以下のコマンドを実行します。
     ```
     ./rest-test.cmd
     ```
+    コマンドは、入力データの言語（英語であるべき）に関する情報を含むJSONドキュメントを返します。
 
-The command returns a JSON document containing information about the language detected in the input data (which should be English).
-
-4. If a key becomes compromised, or the developers who have it no longer require access, you can regenerate it in the portal or by using the Azure CLI. Run the following command to regenerate your **key1** key (replacing *&lt;resourceName&gt;* and *&lt;resourceGroup&gt;* for your resource).
+4. もしキーが漏洩したり、開発者がもうアクセスする必要がなくなった場合は、ポータルやAzure CLIを使ってキーを再生成できます。以下のコマンドを実行して、**key1** キーを再生成してください（*&lt;resourceName&gt;* と *&lt;resourceGroup&gt;* を自分のリソース名とリソースグループに置き換えてください）。
 
     ```
     az cognitiveservices account keys regenerate --name <resourceName> --resource-group <resourceGroup> --key-name key1
     ```
+    Azure AI サービスリソースのキーのリストが表示されます。**key1** が前回取得したときから変更されていることを確認してください。
 
-The list of keys for your Azure AI services resource is returned - note that **key1** has changed since you last retrieved them.
+5. 古いキーを使って **rest-test** コマンドを再実行します（キーボードの **^** 矢印を使って以前のコマンドを表示できます）。これだと失敗することを確認してください。
+6. **rest-test.cmd** の中の *curl* コマンドを編集し、新しい **key1** の値に置き換えて変更を保存します。その後、**rest-test** コマンドを再実行すると、成功することを確認してください。
 
-5. Re-run the **rest-test** command with the old key (you can use the **^** arrow on your keyboard to cycle through previous commands), and verify that it now fails.
-6. Edit the *curl* command in **rest-test.cmd** replacing the key with the new **key1** value, and save the changes. Then rerun the **rest-test** command and verify that it succeeds.
+> **ヒント**: この演習では、Azure CLI パラメーターのフルネーム（**--resource-group** など）を使用しました。コマンドを短くするために、**-g** のような短い代替も使用できます（ただし、少しわかりにくくなります）。Azure AI サービス CLI コマンドのパラメーターオプションについては、[Azure AI Services CLI コマンドリファレンス](https://docs.microsoft.com/cli/azure/cognitiveservices?view=azure-cli-latest)を参照してください。
 
-> **Tip**: In this exercise, you used the full names of Azure CLI parameters, such as **--resource-group**.  You can also use shorter alternatives, such as **-g**, to make your commands less verbose (but a little harder to understand).  The [Azure AI Services CLI command reference](https://docs.microsoft.com/cli/azure/cognitiveservices?view=azure-cli-latest) lists the parameter options for each Azure AI services CLI command.
+## Azure Key Vault を使った安全なキーへのアクセス
+Azure AI サービスを使うアプリケーションを開発する際、認証のためにキーを使う必要があります。しかしこの場合、開発したアプリケーションのコードからキーを取得できる必要があります。キーを環境変数や設定ファイルに保存する方法もありますが、これらの方法ではキーが不正アクセスにさらされる危険性があります。Azure でアプリケーションを開発する際には、キーを安全に Azure Key Vault に保存し、*マネージドID*（つまり、アプリケーション自体が使うユーザーアカウント）を通じてキーにアクセスする方法がより良いアプローチです。
 
-## Secure key access with Azure Key Vault
+### Key Vault を作成しシークレットを追加する
 
-You can develop applications that consume Azure AI services by using a key for authentication. However, this means that the application code must be able to obtain the key. One option is to store the key in an environment variable or a configuration file where the application is deployed, but this approach leaves the key vulnerable to unauthorized access. A better approach when developing applications on Azure is to store the key securely in Azure Key Vault, and provide access to the key through a *managed identity* (in other words, a user account used by the application itself).
+まず、キーコンテナー（キーを預けておくための入れ物）を作成し、Azure AI Service キーの*シークレット*を追加します。
 
-### Create a key vault and add a secret
-
-First, you need to create a key vault and add a *secret* for the Azure AI services key.
-
-1. Make a note of the **key1** value for your Azure AI services resource (or copy it to the clipboard).
-2. In the Azure portal, on the **Home** page, select the **&#65291;Create a resource** button, search for *Key Vault*, and create a **Key Vault** resource with the following settings:
-
-    - **Basics** tab
-        - **Subscription**: *Your Azure subscription*
-        - **Resource group**: *The same resource group as your Azure AI service resource*
-        - **Key vault name**: *Enter a unique name*
-        - **Region**: *The same region as your Azure AI service resource*
-        - **Pricing tier**: Standard
+1. Azure AI サービスリソースの **key1** の値をメモするか、クリップボードにコピーしてください。
+2. Azure ポータルの **ホーム** ページで、**&#65291;リソースの作成** ボタンを選び、*Key Vault* を検索して、以下の設定で **Key Vault** リソースを作成します。
+    - **基本** タブ
+        - **サブスクリプション**: *あなたの Azure サブスクリプション*
+        - **リソースグループ**: *Azure AI サービスリソースと同じリソースグループ*
+        - **キーコンテナー名**: *一意の名前を入力*
+        - **リージョン**: *Azure AI サービスリソースと同じリージョン*
+        - **価格レベル**: Standard
     
-    - **Access configuration** tab
-        -  **Permission model**: Vault access policy
-        - Scroll down to the **Access policies** section and select your user using the checkbox on the left. Then select **Review + create**, and select **Create** to create your resource.
-     
-3. Wait for deployment to complete and then go to your key vault resource.
-4. In the left navigation pane, select **Secrets** (in the Objects section).
-5. Select **+ Generate/Import** and add a new secret with the following settings :
-    - **Upload options**: Manual
-    - **Name**: AI-Services-Key *(it's important to match this exactly, because later you'll run code that retrieves the secret based on this name)*
-    - **Secret value**: *Your **key1** Azure AI services key*
-6. Select **Create**.
+    - **アクセス構成** タブ
+        - **権限モデル**: Vault アクセスポリシー
+        - **アクセス ポリシー** セクションまでスクロールし、左側のチェックボックスを使って自分のユーザーを選択します。その後、**確認および作成** を選び、**作成** を選んでリソースを作成します。
 
-### Create a service principal
+3. デプロイが完了するのを待ち、キーコンテナーリソースに移動します。
+4. 左側のナビゲーションペインで、**シークレット**（オブジェクトセクション内）を選択します。
+5. **+ 生成/インポート** を選択し、次の設定で新しいシークレットを追加します。
+    - **アップロードオプション**: 手動
+    - **名前**: AI-Services-Key *(後でこの名前を使ってシークレットを取得するコードを実行するため、正確に一致させることが重要です)*
+    - **シークレット値**: *あなたの **key1** Azure AI サービスキー*
+6. **作成** を選択します。
+
+### サービスプリンシパルを作成する
 
 To access the secret in the key vault, your application must use a service principal that has access to the secret. You'll use the Azure command line interface (CLI) to create the service principal, find its object ID, and grant access to the secret in Azure Vault.
 
@@ -156,10 +151,9 @@ Make a note of the **appId**, **password**, and **tenant** values - you will nee
     ```
     az keyvault set-policy -n <keyVaultName> --object-id <objectId> --secret-permissions get list
     ```
+### アプリケーションでサービスプリンシパルを使用する
 
-### Use the service principal in an application
-
-Now you're ready to use the service principal identity in an application, so it can access the secret Azure AI services key in your key vault and use it to connect to your Azure AI services resource.
+これで、アプリケーションでサービスプリンシパルのIDを使用して、キーコンテナ内の秘密のAzure AIサービスキーにアクセスし、それを使ってAzure AIサービスリソースに接続できるようになりました。
 
 > **Note**: In this exercise, we'll store the service principal credentials in the application configuration and use them to authenticate a **ClientSecretCredential** identity in your application code. This is fine for development and testing, but in a real production application, an administrator would assign a *managed identity* to the application so that it uses the service principal identity to access resources, without caching or storing the password.
 
