@@ -1,78 +1,93 @@
 ---
 lab:
-    title: 'Get Started with Azure AI Services'
-    module: 'Module 2 - Developing AI Apps with Azure AI Services'
+    title: 'Azure AI Service のはじめ方'
+    module: 'Module 2 - Azure AI サービスを作成して使用する'
 ---
 
-# Get Started with Azure AI Services
+# Azure AI Service のはじめ方
 
-In this exercise, you'll get started with Azure AI Services by creating an **Azure AI Services** resource in your Azure subscription and using it from a client application. The goal of the exercise is not to gain expertise in any particular service, but rather to become familiar with a general pattern for provisioning and working with Azure AI services as a developer.
+この演習では、Azure AI Service を使うために、自分の Azure サブスクリプションで **Azure AI Service** のリソースを作成し、それをクライアントアプリケーションから使います。この演習の目的は、特定のサービスについて詳しくなることではなく、開発者として Azure AI サービスを準備して使う一般的な方法に慣れることです。
 
-## Clone the repository in Visual Studio Code
+## Visual Studio Code にリポジトリをクローンする
 
-You'll develop your code using Visual Studio Code. The code files for your app have been provided in a GitHub repo.
+Visual Studio Code を使ってコードを開発します。アプリ用のコードファイルは GitHub リポジトリに用意されています。
 
-> **Tip**: If you have already cloned the **mslearn-ai-services** repo, open it in Visual Studio code. Otherwise, follow these steps to clone it to your development environment.
 
-1. Start Visual Studio Code.
-2. Open the palette (SHIFT+CTRL+P) and run a **Git: Clone** command to clone the `https://github.com/MicrosoftLearning/mslearn-ai-services` repository to a local folder (it doesn't matter which folder).
-3. When the repository has been cloned, open the folder in Visual Studio Code.
-4. Wait while additional files are installed to support the C# code projects in the repo, if necessary
+> **ヒント**: すでに **mslearn-ai-services-jp** リポジトリをクローンしている場合は、それを Visual Studio Code で開いてください。まだの場合は、以下の手順に従って開発環境にクローンしてください。
 
-    > **Note**: If you are prompted to add required assets to build and debug, select **Not Now**.
+1. Visual Studio Code を起動します。
+2. コマンドパレットを開き（SHIFT + CTRL + P）、**Git: Clone** コマンドを実行して、`https://github.com/MicrosoftLearning/mslearn-ai-services-jp` リポジトリをローカルフォルダにクローンします（フォルダの場所はどこでも構いません）。
+3. リポジトリがクローンされたら、そのフォルダを Visual Studio Code で開きます。
+4. 必要に応じて、リポジトリ内の C# プロジェクトをサポートするための追加ファイルがインストールされるのを待ちます。
+> 注意: 必要なアセットを追加してビルドやデバッグを行うよう求められた場合は、Not Now（今はしない） を選択してください。
+5. Labfiles/01-use-azure-ai-services フォルダを展開します。
 
-5. Expand the `Labfiles/01-use-azure-ai-services` folder.
 
-Code for both C# and Python has been provided. Expand the folder of your preferred language.
+C# と Python のコードが用意されています。自分が使いたい言語のフォルダを展開してください。
 
-## Provision an Azure AI Services resource
+## Azure AI Services リソースを作成する
 
-Azure AI Services are cloud-based services that encapsulate artificial intelligence capabilities you can incorporate into your applications. You can provision individual Azure AI services resources for specific APIs (for example, **Language** or **Vision**), or you can provision a single **Azure AI Services** resource that provides access to multiple Azure AI services APIs through a single endpoint and key. In this case, you'll use a single **Azure AI Services** resource.
+Azure AI Service は、アプリケーションに組み込むことができる人工知能機能を提供するクラウドベースのサービスです。特定の API（例えば、**Language** や **Vision**）用に個別の Azure AI Services リソースを作成することもできますし、複数の Azure AI Services API に単一のエンドポイントとキーを通じてアクセスできる **Azure AI Services** リソースを 1 つ作成することもできます。今回は、単一の **Azure AI Services** リソースを使用します。
 
-1. Open the Azure portal at `https://portal.azure.com`, and sign in using the Microsoft account associated with your Azure subscription.
-2. In the top search bar, search for *Azure AI services*, select **Azure AI Services**, and create an Azure AI services multi-service account resource with the following settings:
-    - **Subscription**: *Your Azure subscription*
-    - **Resource group**: *Choose or create a resource group (if you are using a restricted subscription, you may not have permission to create a new resource group - use the one provided)*
-    - **Region**: *Choose any available region*
-    - **Name**: *Enter a unique name*
+1. `https://portal.azure.com` で Azure ポータルを開き、Azure サブスクリプションに関連付けられた Microsoft アカウントでサインインします。
+2. 上部の検索バーで *Azure AI services* と入力して検索し、**Azure AI Services** を選択して、以下の設定で Azure AI Service マルチサービスアカウントリソースを作成します。
+    > 注意: Azure には、Azure AI Serives という名前のリソースが複数種類あります。 Azure AI Services Multi Service Account は以下のスクリーンショットのアイコンのAzure AI Servicesを選択してください。![Azure AI Services](./img/azure-ai-services-multi-account-resource.png)
+
+    - **サブスクリプション**: *自分の Azure サブスクリプション*
+    - **リソースグループ**: *既存のリソースグループを選択するか新しいものを作成（制限付きのサブスクリプションを使用している場合、新しいリソースグループを作成する権限がない場合があります。その場合は提供されたものを使用してください）*
+    - **Region**: *利用可能なリージョンを選択*
+    - **Name**: *一意の名前を入力*
     - **Pricing tier**: Standard S0
-3. Select the required checkboxes and create the resource.
-4. Wait for deployment to complete, and then view the deployment details.
-5. Go to the resource and view its **Keys and Endpoint** page. This page contains the information that you will need to connect to your resource and use it from applications you develop. Specifically:
-    - An HTTP *endpoint* to which client applications can send requests.
-    - Two *keys* that can be used for authentication (client applications can use either key to authenticate).
-    - The *location* where the resource is hosted. This is required for requests to some (but not all) APIs.
+![Create Azure AI Services](./img/create-azure-ai-services.png)
 
-## Use a REST Interface
+3. 必要なチェックボックスを選択してリソースを作成します。
+4. デプロイが完了するのを待ち、デプロイの詳細を確認します。
+5. リソースに移動し、その **キーとエンドポイント** ページを表示します。このページには、リソースに接続して開発したアプリケーションから使用するために必要な情報が含まれています。具体的には以下の情報があります。
+    - 認証に使用できる２つの *キー*（クライアントアプリケーションはどちらのキーでも認証可能）。
+    - リソースがホストされている *場所/地域*（一部の API リクエストにはこの情報が必要）。
+    - クライアントアプリケーションがリクエストを送信するための HTTP *エンドポイント*。
+![Key and Endpoint](./img/key-and-endpoint.png)
 
-The Azure AI services APIs are REST-based, so you can consume them by submitting JSON requests over HTTP. In this example, you'll explore a console application that uses the **Language** REST API to perform language detection; but the basic principle is the same for all of the APIs supported by the Azure AI Services resource.
+## RESTインターフェースの利用方法
 
-> **Note**: In this exercise, you can choose to use the REST API from either **C#** or **Python**. In the steps below, perform the actions appropriate for your preferred language.
+Azure AI Services の API は REST という仕組みを使っていて、HTTP を使って JSON という形式でリクエストを送ることで使うことができます。この例では、**Language** REST API を使って言語を判別するコンソールアプリケーションを試します。Azure AI Services の他の API も、基本的な使い方は同じです。
 
-1. In Visual Studio Code, expand the **C-Sharp** or **Python** folder depending on your language preference.
-2. View the contents of the **rest-client** folder, and note that it contains a file for configuration settings:
+> **注意**: **C#** または **Python** のどちらか好きな言語で REST API を使うことができます。以下の手順では、自分が選んだ言語に合った操作を行ってください。
+
+1. Visual Studio Code で、自分が使いたい言語に応じて **C-Sharp** または **Python** フォルダーを展開します。
+2. **rest-client** フォルダーの中身を確認し、設定用のファイルが含まれていることを確認します。
 
     - **C#**: appsettings.json
     - **Python**: .env
 
-    Open the configuration file and update the configuration values it contains to reflect the **endpoint** and an authentication **key** for your Azure AI services resource. Save your changes.
+        ![appsettings.json と .env ファイル](./img/appsettings_env.png)
 
-3. Note that the **rest-client** folder contains a code file for the client application:
+    設定ファイルを開き、Azure AI サービスリソースの **endpoint（エンドポイント）** と認証用の **key（キー）** を反映するように設定値を更新します。その後、変更を保存してください。
+
+    **C#: appsetting.json**
+    ![appsettings.json](./img/appsetting-json.png)
+    **Python: .env**
+    ![.env](./img/dot-env.png)
+
+3. **rest-client** フォルダーにはクライアントアプリケーション用のコードファイルが含まれています：
 
     - **C#**: Program.cs
     - **Python**: rest-client.py
 
-    Open the code file and review the code it contains, noting the following details:
-    - Various namespaces are imported to enable HTTP communication
-    - Code in the **Main** function retrieves the endpoint and key for your Azure AI services resource - these will be used to send REST requests to the Text Analytics service.
-    - The program accepts user input, and uses the **GetLanguage** function to call the Text Analytics language detection REST API for your Azure AI services endpoint to detect the language of the text that was entered.
-    - The request sent to the API consists of a JSON object containing the input data - in this case, a collection of **document** objects, each of which has an **id** and **text**.
-    - The key for your service is included in the request header to authenticate your client application.
-    - The response from the service is a JSON object, which the client application can parse.
+        ![rest-clientフォルダ](./img/resr-client-folder.png)
 
-4. Right click on the **rest-client** folder, select *Open in Integrated Terminal* and run the following command:
+    コードファイルを開いて中身を確認し、以下のポイントに注目してください。
+    - HTTP 通信を可能にするためのさまざまな名前空間（またはモジュール）がインポートされています。
+    - **Main** 関数のコードでは、Azure AI Services リソースのエンドポイントとキーを取得します。これらは Text Analytics サービスに REST リクエストを送るために使用されます。
+    - プログラムはユーザー入力を受け取り、**GetLanguage** 関数を使って、Azure AI Services のエンドポイントにある Text Analytics 言語検出 REST API を呼び出し、入力されたテキストの言語を判別します。
+    - API に送信されるリクエストは、**document** オブジェクトのコレクションを含む JSON オブジェクトで構成されています。それぞれのドキュメントには **id** と **text** が含まれます。
+    - サービスキーはリクエストヘッダーに含まれ、クライアントアプリケーションの認証に使用されます。
+    - サービスからの応答は JSON オブジェクトとして返され、クライアントアプリケーションがそれを解析します。
 
+4. **rest-client** フォルダの上で右クリックをし, select *統合ターミナルで開く* を選択し、以下のコマンドを実行します。
     **C#**
+
+    ![Open Integrated Terminal](./img/open-terminal-cs.png)
 
     ```
     dotnet run
@@ -80,21 +95,35 @@ The Azure AI services APIs are REST-based, so you can consume them by submitting
 
     **Python**
 
+    ![Open Integrated Terminal](./img/open-terminal-python.png)
     ```
     pip install python-dotenv
     python rest-client.py
     ```
+5. プログラムに入力を求められたら、いくつかのテキストを入力し、サービスによって検出された言語を確認してください。この結果は JSON レスポンスとして返されます。例えば、「Hello」、「Bonjour」、「こんにちは」などを入力して試してみてください。
+6. アプリケーションのテストが終わったら、「quit」と入力してプログラムを終了してください。
+   
+    **C#**
+    > 実行結果
+    ![dotnet run 実行結果](./img/dotnet-run.png)
 
-5. When prompted, enter some text and review the language that is detected by the service, which is returned in the JSON response. For example, try entering "Hello", "Bonjour", and "Gracias".
-6. When you have finished testing the application, enter "quit" to stop the program.
+    **Python**
+    > 実行結果
+    ![pip と rest-client.py の実行結果](./img/python-rest-client.png)
 
-## Use an SDK
+## SDKの利用方法
 
-You can write code that consumes Azure AI services REST APIs directly, but there are software development kits (SDKs) for many popular programming languages, including Microsoft C#, Python, Java, and Node.js. Using an SDK can greatly simplify development of applications that consume Azure AI services.
+Azure AI Services の REST API を直接利用するコードを書くこともできますが、Microsoft C#、Python、Java、Node.js など、多くの人気のあるプログラミング言語向けにソフトウェア開発キット（SDK）が用意されています。SDK を使用することで、Azure AI Services を利用するアプリケーションの開発が大幅に簡単になります。
 
-1. In Visual Studio Code, expand the **sdk-client** folder under the **C-Sharp** or **Python** folder, depending on your language preference. Then run `cd ../sdk-client` to change into the relevant **sdk-client** folder.
+1. Visual Studio Code で、自分の言語の好みに応じて **C-Sharp** または **Python** フォルダーの下にある **sdk-client** フォルダーを展開します。その後、ターミナルで `cd ../sdk-client` を実行して、該当する **sdk-client** フォルダーに移動します。
+   
+    > C# または Python フォルダの中の **sdk-client** フォルダーを見つけます。
+    ![sdk-clientフォルダー](./img/sdk-client-folders.png)
 
-2. Install the Text Analytics SDK package by running the appropriate command for your language preference:
+    > ターミナルで`cd`コマンドを使って、**sdk-client** フォルダーに移動します。
+    ![cd sdk-client](./img/cd-sdk-client.png)
+
+2. 自分の言語に応じた以下のコマンドを実行して、Text Analytics SDK パッケージをインストールします。
 
     **C#**
 
@@ -102,56 +131,66 @@ You can write code that consumes Azure AI services REST APIs directly, but there
     dotnet add package Azure.AI.TextAnalytics --version 5.3.0
     ```
 
+    > 実行結果:
+    ![dotnet add package Azure.AI.TextAnalytics](./img/dotnet-add-package.png)
+
     **Python**
 
     ```
     pip install azure-ai-textanalytics==5.3.0
     ```
+    > 実行結果:
+    ![pip install azure-ai-textanalytics](./img/pip-install-azure-ai-textanalytics.png)
 
-3. View the contents of the **sdk-client** folder, and note that it contains a file for configuration settings:
+3. **sdk-client** フォルダーの中に設定用のファイルがあることを確認します。
 
-    - **C#**: appsettings.json
-    - **Python**: .env
+- **C#**: `appsettings.json`
+- **Python**: `.env`
 
-    Open the configuration file and update the configuration values it contains to reflect the **endpoint** and an authentication **key** for your Azure AI services resource. Save your changes.
-    
-4. Note that the **sdk-client** folder contains a code file for the client application:
+    設定ファイルを開いて、Azure AI Services リソースの **endpoint（エンドポイント）** と認証用の **key（キー）** を反映するように設定値を更新してください。その後、変更を保存します。
 
-    - **C#**: Program.cs
-    - **Python**: sdk-client.py
+4. **sdk-client** フォルダーには、クライアントアプリケーション用のコードファイルが含まれています。
 
-    Open the code file and review the code it contains, noting the following details:
-    - The namespace for the SDK you installed is imported
-    - Code in the **Main** function retrieves the endpoint and key for your Azure AI services resource - these will be used with the SDK to create a client for the Text Analytics service.
-    - The **GetLanguage** function uses the SDK to create a client for the service, and then uses the client to detect the language of the text that was entered.
+    - **C#**: `Program.cs`
+    - **Python**: `sdk-client.py`
 
-5. Return to the terminal, ensure you are in the **sdk-client** folder, and enter the following command to run the program:
+    コードファイルを開き、中身を確認して以下のポイントに注目してください。
+    - インストールした SDK 用の名前空間（またはモジュール）がインポートされています。
+    - **Main** 関数のコードでは、Azure AI Services リソースのエンドポイントとキーを取得しています。これらは SDK を使って Text Analytics Service 用のクライアントを作るために使われます。
+    - **GetLanguage** 関数では、SDK を使ってサービス用のクライアントを作成し、そのクライアントを使って入力されたテキストの言語を判別します。
 
+5. ターミナルに戻り、**sdk-client** フォルダーにいることを確認して、次のコマンドを入力してプログラムを実行してください。
+   
     **C#**
-
     ```
     dotnet run
     ```
-
     **Python**
-
     ```
     python sdk-client.py
     ```
 
-6. When prompted, enter some text and review the language that is detected by the service. For example, try entering "Goodbye", "Au revoir", and "Hasta la vista".
-7. When you have finished testing the application, enter "quit" to stop the program.
+6. プログラムに入力を求められたら、いくつかのテキストを入力し、サービスが検出した言語を確認してください。例えば、「こんにちは」、「Hello」、「你好」などを試してみてください。
+7. アプリケーションのテストが終わったら、「quit」と入力してプログラムを終了してください。
+   
+    **C#**
+    > 実行結果
+    ![dotnet run](./img/cs-sdk-client.png)
 
-> **Note**: Some languages that require Unicode character sets may not be recognized in this simple console application.
+    **Python**
+    > 実行結果
+    ![python sdk-client.py](./img/python-sdk-client.png)
 
-## Clean up resources
+> **注意**: Unicode 文字セットが必要な一部の言語は、このシンプルなコンソールアプリケーションでは認識されない場合があります。
 
-If you're not using the Azure resources created in this lab for other training modules, you can delete them to avoid incurring further charges.
+## リソースのクリーンアップ
 
-1. Open the Azure portal at `https://portal.azure.com`, and in the top search bar, search for the resources you created in this lab.
+このラボで作成した Azure リソースを他のトレーニングモジュールで使用しない場合は、追加の料金が発生しないように削除することができます。
 
-2. On the resource page, select **Delete** and follow the instructions to delete the resource. Alternatively, you can delete the entire resource group to clean up all resources at the same time.
+1. `https://portal.azure.com` で Azure ポータルを開き、上部の検索バーでこのラボで作成したリソースを検索します。
 
-## More information
+2. リソースのページで **Delete（削除）** を選択し、指示に従ってリソースを削除します。または、リソースグループ全体を削除して、すべてのリソースを一度にクリーンアップすることもできます。
 
-For more information about Azure AI Services, see the [Azure AI Services documentation](https://docs.microsoft.com/azure/ai-services/what-are-ai-services).
+## 詳細情報
+
+Azure AI サービスについての詳細は、[Azure AI Services ドキュメント](https://docs.microsoft.com/azure/ai-services/what-are-ai-services) を参照してください。

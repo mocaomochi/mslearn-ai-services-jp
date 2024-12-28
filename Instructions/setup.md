@@ -1,64 +1,63 @@
 ---
 lab:
-    title: 'Lab Environment Setup'
+    title: 'ラボ環境のセットアップ'
     module: 'Setup'
 ---
 
-# Lab Environment Setup
+# ラボ環境のセットアップ
 
-Exercises are intended to be completed in a hosted lab environment. If you want to complete them on your own computer, you can do so by installing the following software. You may experience unexpected dialogs and behavior when using your own environment. Due to the wide range of possible local configurations, the course team cannot support issues you may encounter in your own environment.
+演習はホストされたラボ環境で実行されることを目的としています。ご自身のコンピューターで実行したい場合は、以下のソフトウェアをインストールすることで可能です。ただし、ご自身の環境を使用する場合、予期しないダイアログや動作が生じる可能性があります。ローカルの構成では様々な環境のバリエーションがあるため、このコースを開発したチームはご自身の環境で発生すた問題をサポートすることはできませんのでご了承ください。
 
-> **Note**: The instructions below are for a Windows 11 computer. You can also use Linux or MacOS. You may need to adapt the lab instructions for your chosen OS.
+> **注意**: 以下の手順は Windows 11 用です。Linux または MacOS も使用できますが、選択したOSによってラボの手順を調整する必要があるかもしれません。
 
-### Base Operating System (Windows 11)
+### ベースとなるOS (Windows 11)
 
 #### Windows 11
 
-Install Windows 11 and apply all updates.
+Windows 11 をインストールし、すべてのアップデートを適用してください。
 
 #### Edge
 
-Install [Edge (Chromium)](https://microsoft.com/edge)
+[Edge (Chromium)](https://microsoft.com/edge)ブラウザをインストールしてください。
 
 ### .NET Core SDK
 
-1. Download and install from https://dotnet.microsoft.com/download (download .NET Core SDK - not just the runtime). If you are running the labs in this course on your own machine, you should have .NET 8.0.
+1. https://dotnet.microsoft.com/download からダウンロードしてインストールしてください (.NET Core SDK をダウンロードしてください - ランタイムだけではありません)。このコースのラボを自分のマシンで実行する場合、.NET 8.0 をインストールする必要があります。
 
-### C++ Redistributable
+### C++ 再配布可能パッケージ
 
-1. Download and install the Visual C++ Redistributable (x64) from https://aka.ms/vs/16/release/vc_redist.x64.exe.
+1. https://aka.ms/vs/16/release/vc_redist.x64.exe から Visual C++ 再頒布可能パッケージ (x64) をダウンロードしてインストールしてください。
 
 ### Node.JS
 
-1. Download the latest LTS version from https://nodejs.org/en/download/ 
-2. Install using the default options
+1. https://nodejs.org/ja/download/ から最新のLTSバージョンをダウンロードしてください
+2. デフォルトのオプションを使用してインストールしてください
 
-### Python (and required packages)
+### Python (および必要なパッケージ)
 
-1. Download version 3.11 from https://docs.conda.io/en/latest/miniconda.html 
-2. Run setup to install - **Important**: Select the options to add Miniconda to the PATH variable and to register Miniconda as the default Python environment.
-3. After installation, open the Anaconda prompt and enter the following commands to install packages: 
+1. https://docs.conda.io/en/latest/miniconda.html からバージョン3.11をダウンロードしてください。
+2. セットアップを実行してインストールしてください。
+**重要**: MinicondaをPATH変数に追加し、MinicondaをデフォルトのPython環境として登録するオプションを選択してください。
+3. インストール後、Anacondaプロンプトを開き、以下のコマンドを入力してパッケージをインストールしてください:
 
 ```
 pip install flask requests python-dotenv pylint matplotlib pillow
 pip install --upgrade numpy
 ```
-
 ### Azure CLI
 
-1. Download from https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest 
-2. Install using the default options
+1. https://docs.microsoft.com/ja-jp/cli/azure/install-azure-cli?view=azure-cli-latest からダウンロードしてください。
+2. デフォルトのオプションを使用してインストールしてください。
 
 ### Git
 
-1. Download and install from https://git-scm.com/download.html, using the default options
+1. https://git-scm.com/download.html からダウンロードしてインストールしてください。デフォルトのオプションを使用してください。
 
+### Visual Studio Code (および拡張機能)
 
-### Visual Studio Code (and extensions)
-
-1. Download from https://code.visualstudio.com/Download 
-2. Install using the default options 
-3. After installation, start Visual Studio Code and on the **Extensions** tab (CTRL+SHIFT+X), search for and install the following extensions from Microsoft:
+1. https://code.visualstudio.com/Download からダウンロードしてください。
+2. デフォルトのオプションを使用してインストールしてください。
+3. インストール後、Visual Studio Code を起動し、**拡張機能** タブ (CTRL+SHIFT+X) で以下の Microsoft 製拡張機能を検索してインストールしてください。
     - Python
     - C#
     - Azure Functions

@@ -1,12 +1,11 @@
 ---
-title: Azure AI Services Exercises
+title: Azure AI Services 演習
 permalink: index.html
 layout: home
 ---
 
-# Azure AI Services Exercises
-
-The following exercises are designed to support the modules on Microsoft Learn.
+# Azure AI Services 演習
+これらの演習は、Microsoft Learn のモジュールをサポートするために設計されています。
 
 
 {% assign labs = site.pages | where_exp:"page", "page.url contains '/Instructions/Exercises'" %}

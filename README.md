@@ -1,2 +1,2 @@
 # mslearn-ai-services
-Lab files for Azure AI Services modules
+ラボファイル：Azure AI Service モジュール
