@@ -31,23 +31,29 @@ Azure AI Service は、アプリケーションに組み込むことができる
 
 1. `https://portal.azure.com` で Azure ポータルを開き、Azure サブスクリプションに関連付けられた Microsoft アカウントでサインインします。
 2. 上部の検索バーで *Azure AI services* と入力して検索し、**Azure AI Services** を選択して、以下の設定で Azure AI Service マルチサービスアカウントリソースを作成します。
-    > 注意: Azure には、Azure AI Serives という名前のリソースが複数種類あります。 Azure AI Services Multi Service Account は以下のスクリーンショットのアイコンのAzure AI Servicesを選択してください。
+
     ![Azure AI Services](./img/azure-ai-services-multi-account-resource.png)
+
+    > 注意: Azure には、Azure AI Serives という名前のリソースが複数種類あります。 Azure AI Services Multi Service Account は以下のスクリーンショットのアイコンのAzure AI Servicesを選択してください。
+
+    ![Create Azure AI Services](./img/create-azure-ai-services.png)
 
     - **サブスクリプション**: *自分の Azure サブスクリプション*
     - **リソースグループ**: *既存のリソースグループを選択するか新しいものを作成（制限付きのサブスクリプションを使用している場合、新しいリソースグループを作成する権限がない場合があります。その場合は提供されたものを使用してください）*
     - **Region**: *利用可能なリージョンを選択*
     - **Name**: *一意の名前を入力*
     - **Pricing tier**: Standard S0
-![Create Azure AI Services](./img/create-azure-ai-services.png)
+
 
 3. 必要なチェックボックスを選択してリソースを作成します。
 4. デプロイが完了するのを待ち、デプロイの詳細を確認します。
 5. リソースに移動し、その **キーとエンドポイント** ページを表示します。このページには、リソースに接続して開発したアプリケーションから使用するために必要な情報が含まれています。具体的には以下の情報があります。
+
     - 認証に使用できる２つの *キー*（クライアントアプリケーションはどちらのキーでも認証可能）。
     - リソースがホストされている *場所/地域*（一部の API リクエストにはこの情報が必要）。
     - クライアントアプリケーションがリクエストを送信するための HTTP *エンドポイント*。
-![Key and Endpoint](./img/key-and-endpoint.png)
+
+    ![Key and Endpoint](./img/key-and-endpoint.png)
 
 ## RESTインターフェースの利用方法
 
@@ -75,7 +81,7 @@ Azure AI Services の API は REST という仕組みを使っていて、HTTP �
     - **C#**: Program.cs
     - **Python**: rest-client.py
 
-        ![rest-clientフォルダ](./img/resr-client-folder.png)
+    ![rest-clientフォルダ](./img/resr-client-folder.png)
 
     コードファイルを開いて中身を確認し、以下のポイントに注目してください。
     - HTTP 通信を可能にするためのさまざまな名前空間（またはモジュール）がインポートされています。
@@ -87,7 +93,6 @@ Azure AI Services の API は REST という仕組みを使っていて、HTTP �
 
 4. **rest-client** フォルダの上で右クリックをし, select *統合ターミナルで開く* を選択し、以下のコマンドを実行します。
     **C#**
-
     ![Open Integrated Terminal](./img/open-terminal-cs.png)
 
     ```
@@ -95,7 +100,6 @@ Azure AI Services の API は REST という仕組みを使っていて、HTTP �
     ```
 
     **Python**
-
     ![Open Integrated Terminal](./img/open-terminal-python.png)
     ```
     pip install python-dotenv
@@ -129,7 +133,6 @@ Azure AI Services の REST API を直接利用するコードを書くことも�
     ```
     dotnet add package Azure.AI.TextAnalytics --version 5.3.0
     ```
-
     実行結果:
     ![dotnet add package Azure.AI.TextAnalytics](./img/dotnet-add-package.png)
 
@@ -143,8 +146,8 @@ Azure AI Services の REST API を直接利用するコードを書くことも�
 
 3. **sdk-client** フォルダーの中に設定用のファイルがあることを確認します。
 
-- **C#**: `appsettings.json`
-- **Python**: `.env`
+   - **C#**: `appsettings.json`
+   - **Python**: `.env`
 
     設定ファイルを開いて、Azure AI Services リソースの **endpoint（エンドポイント）** と認証用の **key（キー）** を反映するように設定値を更新してください。その後、変更を保存します。
 
@@ -159,7 +162,7 @@ Azure AI Services の REST API を直接利用するコードを書くことも�
     - **GetLanguage** 関数では、SDK を使ってサービス用のクライアントを作成し、そのクライアントを使って入力されたテキストの言語を判別します。
 
 5. ターミナルに戻り、**sdk-client** フォルダーにいることを確認して、次のコマンドを入力してプログラムを実行してください。
-   
+
     **C#**
     ```
     dotnet run
@@ -171,7 +174,7 @@ Azure AI Services の REST API を直接利用するコードを書くことも�
 
 6. プログラムに入力を求められたら、いくつかのテキストを入力し、サービスが検出した言語を確認してください。例えば、「こんにちは」、「Hello」、「你好」などを試してみてください。
 7. アプリケーションのテストが終わったら、「quit」と入力してプログラムを終了してください。
-   
+
     **C#**:実行結果
     ![dotnet run](./img/cs-sdk-client.png)
 
